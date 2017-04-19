@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170412142845) do
 
-  create_table "chefs", force: :cascade do |t|
+  create_table "chef", force: :cascade do |t|
     t.string "chefname"
     t.string "email"
     t.datetime "created_at", null: false
