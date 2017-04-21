@@ -28,6 +28,8 @@ test "should get recipes show" do
   assert_match @recipe.name, response.body
   assert_match @recipe.description, response.body
   assert_match @chef.chefname, response.body
+  assert_select 'a[href=?]', edit_recipe_path(@recipe), text: "Edit this recipe"
+  assert_select 'a[href=?]', recipe_path(@recipe), text: "Delete this recipe"
  end
 
  test "create new valid recipe" do
@@ -46,7 +48,7 @@ end
  test "reject invalid recipe submissions" do
    get new_recipe_path
    assert_template 'recipes/new'
-   assert_no_difference 'Recipe.count'do
+   assert_no_difference 'Recipe.count'  do
    post recipes_path, params: {recipe: {name: " ", description: " "}}
   end
   assert_template 'recipes/new'
