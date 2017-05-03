@@ -21,10 +21,11 @@ class ChefsSignupTest < ActionDispatch::IntegrationTest
    	get signup_path
     assert_no_difference "Chef.count", 1 do
      post chefs_path, params: {chef: { chefname: " miguel",  email: "jajosemiguel@gmail.com", password: "password",
-                                          password_confirmation: "password"}}
+                                        password_confirmation: "password"}}
     end
     follow_redirect!
     assert_template 'chefs/show'
     assert_not flash.empty?
+
    end
 end
