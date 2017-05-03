@@ -3,7 +3,8 @@ require 'test_helper'
 class ChefTest < ActiveSupport::TestCase
 	
 	def setup
-	@chef = Chef.new(chefname:"jose", email:"jajosemiguel@gmail.com")
+	@chef = Chef.new(chefname:"jose", email:"jajosemiguel@gmail.com", 
+		password: "password", password_confirmation: "password")
 	end
 
 	test "Should ve balid" do
@@ -38,15 +39,26 @@ class ChefTest < ActiveSupport::TestCase
         end
     end
 
-    test "email should be unique" do
+    test "email should be unique and case insensitive" do
     	duplicate_chef = @chef.dup
     	duplicate_chef.email = @chef.email.upcase
     	@chef.save
     	assert_not duplicate_chef.valid?
     end
 
-    test "email should be case insensitive" do
-    	
+    test "email should be lower case before hitting db" do
+    	mixed_email = "jalvarado@ewn.com.mx"
+    	@chef.email = mixed_email
+    	@chef.save
+    	assert_equal mixed_email.downcase, @chef.reload.email
     end
+    test " password should be present" do
+    	@chef.password = @chef.password_confirmation = " "
+    	assert_not @chef.valid?
+    end
+     
+     test " password_confirmation should be atleast 5 character" do
+     	@chef.password = @chef.password_confirmation = " x" * 4
+     	assert_not @chef.valid?
 end
 
