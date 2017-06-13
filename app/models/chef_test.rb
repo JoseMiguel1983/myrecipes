@@ -60,5 +60,13 @@ class ChefTest < ActiveSupport::TestCase
      test " password_confirmation should be atleast 5 character" do
      	@chef.password = @chef.password_confirmation = " x" * 4
      	assert_not @chef.valid?
+     end
+     test " associated recipes should be destroyed" do
+        @chef.save
+        @chef.recipes.create!(name: "testing destroy", description: "testing destroy function")
+        @assert_difference "Recipe.count", -1 do
+            @chef.destroy
+        end
+    end
 end
 
